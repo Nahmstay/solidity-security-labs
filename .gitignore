@@ -1,6 +1,19 @@
-# Compiler output
-cache/
+# Build
 out/
+cache/
 
-# Claude Code
+# Security
+.env
+broadcast/
+
+# Test output
+logs/
+temp/
+coverage/
+.gas-snapshot
+
+# System
+.DS_Store
+.vscode/
+.idea/
 .claude/

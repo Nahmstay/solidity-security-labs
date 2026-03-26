@@ -1,0 +1,6 @@
+# Compiler output
+cache/
+out/
+
+# Claude Code
+.claude/

@@ -5,8 +5,6 @@ Hands-on smart contract vulnerability examples built with Foundry.
 Each lab contains a vulnerable contract, an attacker contract, and a fixed version.
 Clone it, run the tests, break things, understand why they broke.
 
-Theory only gets you so far. At some point you have to start interacting with the contracts yourself.
-
 ---
 
 ## Getting Started
@@ -22,15 +20,15 @@ Run with verbose output to see exactly what's happening at each step:
 forge test -vvv
 ```
 
+Tests include step-by-step logs showing exactly where the exploit lands and where the fix stops it.
+
 ---
 
 ## Vulnerabilities
 
 | Vulnerability | Folder | Article |
 |---|---|---|
-| Reentrancy — Classic | `src/vulnerabilities/reentrancy/classic` | [Read](your-article-link) |
-| Reentrancy — Cross-Function | `src/vulnerabilities/reentrancy/cross-function` | [Read](your-article-link) |
-| Reentrancy — Cross-Contract | `src/vulnerabilities/reentrancy/cross-contract` | [Read](your-article-link) |
+| Reentrancy — Classic, Cross-Function, Cross-Contract | `src/vulnerabilities/reentrancy` | [Read](your-article-link) |
 
 More coming as the series grows.
 
@@ -52,7 +50,7 @@ Tests live in `test/vulnerabilities/` mirroring the same structure.
 
 Anyone learning smart contract security who wants something to actually run,
 not just read about. If you found this through the blog, welcome.
-If you stumbled in from somewhere else, the blog is at [Nahmstay on Medium](your-medium-link).
+If you stumbled in from somewhere else, each vulnerability has a matching writeup at [Nahmstay on Medium](https://medium.com/@nahmstay).
 
 ---
 

@@ -8,7 +8,6 @@ import "../../../../src/vulnerabilities/reentrancy/cross-function/RippleAttacker
 import "../../../../src/vulnerabilities/reentrancy/cross-function/solution/FortifiedDune.sol";
 
 contract ReentrancyCrossFunctionTest is Test {
-
     DuneVault public duneVault;
     FortifiedDune public fortifiedDune;
 
@@ -89,18 +88,10 @@ contract ReentrancyCrossFunctionTest is Test {
 
         // Attacker started with 1 ETH and should now have 2 ETH
         // 1 ETH from withdraw + 1 ETH from the stale transfer
-        assertEq(
-            attacker.balance,
-            2 ether,
-            "Attack failed: attacker should have doubled their ETH"
-        );
+        assertEq(attacker.balance, 2 ether, "Attack failed: attacker should have doubled their ETH");
 
         // Vault should have lost 1 ETH of the victim's funds
-        assertEq(
-            address(duneVault).balance,
-            4 ether,
-            "Vault should have 4 ETH (victim's 5 minus 1 stolen)"
-        );
+        assertEq(address(duneVault).balance, 4 ether, "Vault should have 4 ETH (victim's 5 minus 1 stolen)");
 
         console.log("");
         console.log("ATTACK SUCCEEDED: Attacker turned 1 ETH into 2 ETH");
@@ -120,9 +111,7 @@ contract ReentrancyCrossFunctionTest is Test {
 
         // Deploy attacker targeting the fixed vault
         vm.prank(attacker);
-        FortifiedDuneAttacker fortifiedAttacker = new FortifiedDuneAttacker(
-            address(fortifiedDune)
-        );
+        FortifiedDuneAttacker fortifiedAttacker = new FortifiedDuneAttacker(address(fortifiedDune));
 
         console.log("Step 1: FortifiedDune balance before: ", address(fortifiedDune).balance);
         console.log("        Attacker EOA balance before:   ", attacker.balance);
@@ -146,25 +135,13 @@ contract ReentrancyCrossFunctionTest is Test {
         console.log("        Attacker vault balance:        ", fortifiedDune.balances(attacker));
 
         // Vault should still have all of victim's funds
-        assertEq(
-            address(fortifiedDune).balance,
-            5 ether,
-            "Vault should still have all 5 ETH"
-        );
+        assertEq(address(fortifiedDune).balance, 5 ether, "Vault should still have all 5 ETH");
 
         // Attacker should have exactly what they started with -- no profit
-        assertEq(
-            attacker.balance,
-            1 ether,
-            "Attacker should only have their original 1 ETH back"
-        );
+        assertEq(attacker.balance, 1 ether, "Attacker should only have their original 1 ETH back");
 
         // Attacker should have zero vault balance -- no stale transfer happened
-        assertEq(
-            fortifiedDune.balances(attacker),
-            0,
-            "Attacker should have no vault balance"
-        );
+        assertEq(fortifiedDune.balances(attacker), 0, "Attacker should have no vault balance");
 
         console.log("");
         console.log("ATTACK NEUTRALIZED: CEI pattern killed the cross-function reentrancy");

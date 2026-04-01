@@ -9,7 +9,6 @@ import "../../../../src/vulnerabilities/reentrancy/cross-contract/PhantomAttacke
 import "../../../../src/vulnerabilities/reentrancy/cross-contract/solution/ShieldedSpire.sol";
 
 contract ReentrancyCrossContractTest is Test {
-
     SpireVault public spireVault;
     MirageRewards public mirageRewards;
 
@@ -62,10 +61,7 @@ contract ReentrancyCrossContractTest is Test {
         console.log("Step 1: Attacker deploys PhantomAttacker");
 
         vm.prank(attacker);
-        PhantomAttacker phantomAttacker = new PhantomAttacker(
-            address(spireVault),
-            address(mirageRewards)
-        );
+        PhantomAttacker phantomAttacker = new PhantomAttacker(address(spireVault), address(mirageRewards));
 
         console.log("Step 2: Record balances before the attack");
         console.log("  SpireVault ETH:          ", address(spireVault).balance);
@@ -96,11 +92,7 @@ contract ReentrancyCrossContractTest is Test {
         console.log("  Reward claimed?          ", mirageRewards.rewardClaimed(address(phantomAttacker)));
 
         // Attacker started with 1 ETH: got 1 ETH back from withdraw + 0.1 ETH reward
-        assertEq(
-            attacker.balance,
-            1.1 ether,
-            "Attacker should have 1.1 ETH (original 1 + 0.1 fraudulent reward)"
-        );
+        assertEq(attacker.balance, 1.1 ether, "Attacker should have 1.1 ETH (original 1 + 0.1 fraudulent reward)");
 
         // MirageRewards should have lost 0.1 ETH
         assertEq(
@@ -110,11 +102,7 @@ contract ReentrancyCrossContractTest is Test {
         );
 
         // SpireVault should have the victim's funds intact (attacker withdrew their own)
-        assertEq(
-            address(spireVault).balance,
-            5 ether,
-            "SpireVault should still have victim's 5 ETH"
-        );
+        assertEq(address(spireVault).balance, 5 ether, "SpireVault should still have victim's 5 ETH");
 
         console.log("");
         console.log("ATTACK SUCCEEDED: Phantom claimed a reward they shouldn't have");
@@ -133,10 +121,8 @@ contract ReentrancyCrossContractTest is Test {
         console.log("=== CROSS-CONTRACT ATTACK ATTEMPT: ShieldedSpire + ShieldedRewards ===");
 
         // Deploy attacker targeting the fixed contracts
-        ShieldedPhantomAttacker shieldedAttacker = new ShieldedPhantomAttacker(
-            address(shieldedSpire),
-            address(shieldedRewards)
-        );
+        ShieldedPhantomAttacker shieldedAttacker =
+            new ShieldedPhantomAttacker(address(shieldedSpire), address(shieldedRewards));
         vm.deal(address(shieldedAttacker), 1 ether);
 
         console.log("Step 1: ShieldedSpire balance before:   ", address(shieldedSpire).balance);
@@ -156,16 +142,8 @@ contract ReentrancyCrossContractTest is Test {
         console.log("        ShieldedRewards balance after:   ", address(shieldedRewards).balance);
 
         // Both vaults unchanged
-        assertEq(
-            address(shieldedSpire).balance,
-            5 ether,
-            "ShieldedSpire should still have all 5 ETH"
-        );
-        assertEq(
-            address(shieldedRewards).balance,
-            1 ether,
-            "ShieldedRewards should still have all 1 ETH"
-        );
+        assertEq(address(shieldedSpire).balance, 5 ether, "ShieldedSpire should still have all 5 ETH");
+        assertEq(address(shieldedRewards).balance, 1 ether, "ShieldedRewards should still have all 1 ETH");
 
         console.log("");
         console.log("ATTACK BLOCKED: CEI pattern killed the cross-contract reentrancy");

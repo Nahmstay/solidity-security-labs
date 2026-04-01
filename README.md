@@ -28,7 +28,7 @@ Tests include step-by-step logs showing exactly where the exploit lands and wher
 
 | Vulnerability | Folder | Article |
 |---|---|---|
-| Reentrancy — Classic, Cross-Function, Cross-Contract | `src/vulnerabilities/reentrancy` | [Read](your-article-link) |
+| Reentrancy — Classic, Cross-Function, Cross-Contract | `src/vulnerabilities/reentrancy` | [Read](https://medium.com/@nahmstay/reentrancy-i-still-write-cei-every-time-5cdb28d1be84) |
 
 More coming as the series grows.
 

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-// ShieldedSpire demonstrates the fixed version of the cross-contract 
+// ShieldedSpire demonstrates the fixed version of the cross-contract
 // reentrancy vulnerability.
 // Both contracts are protected:
 // 1. ShieldedSpire uses CEI and ReentrancyGuard on withdraw
@@ -24,7 +24,7 @@ contract ShieldedSpire is ReentrancyGuard {
 
         balances[msg.sender] = 0; // Effect
 
-        (bool success, ) = msg.sender.call{value: amount}(""); // Interaction
+        (bool success,) = msg.sender.call{value: amount}(""); // Interaction
         require(success, "Transfer failed");
     }
 }
@@ -44,7 +44,7 @@ contract ShieldedRewards is ReentrancyGuard {
 
         rewardClaimed[msg.sender] = true; // Effect
 
-        (bool success, ) = msg.sender.call{value: 0.1 ether}(""); // Interaction
+        (bool success,) = msg.sender.call{value: 0.1 ether}(""); // Interaction
         require(success, "Reward failed");
     }
 }

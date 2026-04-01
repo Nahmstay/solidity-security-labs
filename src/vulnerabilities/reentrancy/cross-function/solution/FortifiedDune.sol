@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-// FortifiedDune demonstrates the fixed version of the cross-function 
+// FortifiedDune demonstrates the fixed version of the cross-function
 // reentrancy vulnerability.
 // The contract uses two layers of protection:
 // 1. Checks-Effects-Interactions (CEI) — state is updated before the external call
@@ -28,7 +28,7 @@ contract FortifiedDune is ReentrancyGuard {
 
         balances[msg.sender] -= amount; // Effect
 
-        (bool success, ) = msg.sender.call{value: amount}(""); // Interaction
+        (bool success,) = msg.sender.call{value: amount}(""); // Interaction
         require(success, "Transfer failed");
     }
 }

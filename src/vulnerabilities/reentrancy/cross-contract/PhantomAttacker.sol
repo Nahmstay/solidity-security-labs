@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-// PhantomAttacker exploits the cross-contract reentrancy between 
+// PhantomAttacker exploits the cross-contract reentrancy between
 // SpireVault and MirageRewards.
 // Like a phantom crossing boundaries unseen, the attacker moves between
-// two contracts through stale state, claiming rewards before the 
+// two contracts through stale state, claiming rewards before the
 // balance is ever zeroed.
 
 import "./SpireVault.sol";

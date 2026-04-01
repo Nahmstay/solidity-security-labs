@@ -23,7 +23,7 @@ contract MirageRewards {
 
         rewardClaimed[msg.sender] = true;
 
-        (bool success, ) = msg.sender.call{value: 0.1 ether}("");
+        (bool success,) = msg.sender.call{value: 0.1 ether}("");
         require(success, "Reward failed");
     }
 }

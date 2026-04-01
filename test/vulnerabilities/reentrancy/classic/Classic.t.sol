@@ -8,7 +8,6 @@ import "../../../../src/vulnerabilities/reentrancy/classic/EchoAttacker.sol";
 import "../../../../src/vulnerabilities/reentrancy/classic/solution/SealedOasis.sol";
 
 contract ReentrancyClassicTest is Test {
-
     OasisVault public oasisVault;
     EchoAttacker public echoAttacker;
     SealedOasis public sealedOasis;
@@ -41,15 +40,16 @@ contract ReentrancyClassicTest is Test {
     // VULNERABLE: Attack succeeds on OasisVault
     // The attacker deposits 1 ETH and drains the entire vault
     // ================================================================
+
     function test_ReentrancyAttackSucceeds_OasisVault() public {
         // Deploy attacker contract pointing at the vulnerable vault
         vm.prank(attacker);
         echoAttacker = new EchoAttacker(address(oasisVault));
 
         console.log("=== BEFORE ATTACK ===");
-        console.log("OasisVault balance:    ", address(oasisVault).balance);
-        console.log("Attacker ETH balance:  ", attacker.balance);
-        console.log("EchoAttacker balance:  ", address(echoAttacker).balance);
+        console.log("OasisVault balance: ", address(oasisVault).balance);
+        console.log("Attacker ETH balance: ", attacker.balance);
+        console.log("EchoAttacker balance: ", address(echoAttacker).balance);
 
         // Attacker launches the attack with 1 ETH
         // EchoAttacker deposits, then calls withdraw
@@ -62,23 +62,15 @@ contract ReentrancyClassicTest is Test {
         echoAttacker.withdraw();
 
         console.log("=== AFTER ATTACK ===");
-        console.log("OasisVault balance:    ", address(oasisVault).balance);
-        console.log("Attacker ETH balance:  ", attacker.balance);
+        console.log("OasisVault balance: ", address(oasisVault).balance);
+        console.log("Attacker ETH balance: ", attacker.balance);
 
         // Attacker started with 1 ETH and should now have more than 1 ETH
         // proving they drained funds that belonged to the victim
-        assertGt(
-            attacker.balance,
-            1 ether,
-            "Attack failed: attacker did not drain more than they deposited"
-        );
+        assertGt(attacker.balance, 1 ether, "Attack failed: attacker did not drain more than they deposited");
 
         // Vault should be empty or nearly empty
-        assertEq(
-            address(oasisVault).balance,
-            0,
-            "Attack failed: vault was not drained"
-        );
+        assertEq(address(oasisVault).balance, 0, "Attack failed: vault was not drained");
 
         console.log("ATTACK SUCCEEDED: Attacker drained the vault");
     }
@@ -87,31 +79,26 @@ contract ReentrancyClassicTest is Test {
     // FIXED: Attack fails on SealedOasis
     // CEI pattern and nonReentrant modifier block the recursive call
     // ================================================================
+
     function test_ReentrancyAttackFails_SealedOasis() public {
         // Deploy attacker contract pointing at the fixed vault
-        SealedOasisAttacker sealedAttacker = new SealedOasisAttacker(
-            address(sealedOasis)
-        );
+        SealedOasisAttacker sealedAttacker = new SealedOasisAttacker(address(sealedOasis));
         vm.deal(address(sealedAttacker), 1 ether);
 
         console.log("=== BEFORE ATTACK ATTEMPT ===");
-        console.log("SealedOasis balance:   ", address(sealedOasis).balance);
-        console.log("Attacker ETH balance:  ", address(sealedAttacker).balance);
+        console.log("SealedOasis balance: ", address(sealedOasis).balance);
+        console.log("Attacker ETH balance: ", address(sealedAttacker).balance);
 
         // Attack should revert due to nonReentrant modifier
         vm.expectRevert();
         sealedAttacker.attack{value: 1 ether}();
 
         console.log("=== AFTER ATTACK ATTEMPT ===");
-        console.log("SealedOasis balance:   ", address(sealedOasis).balance);
-        console.log("Victim funds safe:      5 ETH still in vault");
+        console.log("SealedOasis balance: ", address(sealedOasis).balance);
+        console.log("Victim funds safe: 5 ETH still in vault");
 
         // Vault balance should be unchanged
-        assertEq(
-            address(sealedOasis).balance,
-            5 ether,
-            "Vault was drained despite protection"
-        );
+        assertEq(address(sealedOasis).balance, 5 ether, "Vault was drained despite protection");
 
         console.log("ATTACK BLOCKED: ReentrancyGuard prevented the exploit");
     }
@@ -119,6 +106,7 @@ contract ReentrancyClassicTest is Test {
     // ================================================================
     // NORMAL USAGE: Deposits and withdrawals work correctly
     // ================================================================
+
     function test_NormalWithdraw_OasisVault() public {
         console.log("=== NORMAL WITHDRAW TEST ===");
         console.log("Victim balance before: ", victim.balance);
@@ -126,14 +114,8 @@ contract ReentrancyClassicTest is Test {
         vm.prank(victim);
         oasisVault.withdraw(1 ether);
 
-        console.log("Victim balance after:  ", victim.balance);
-
-        assertEq(
-            victim.balance,
-            1 ether,
-            "Normal withdraw failed"
-        );
-
+        console.log("Victim balance after: ", victim.balance);
+        assertEq(victim.balance, 1 ether, "Normal withdraw failed");
         console.log("NORMAL WITHDRAW SUCCEEDED");
     }
 
@@ -144,14 +126,8 @@ contract ReentrancyClassicTest is Test {
         vm.prank(victim);
         sealedOasis.withdraw(1 ether);
 
-        console.log("Victim balance after:  ", victim.balance);
-
-        assertEq(
-            victim.balance,
-            1 ether,
-            "Normal withdraw failed on SealedOasis"
-        );
-
+        console.log("Victim balance after: ", victim.balance);
+        assertEq(victim.balance, 1 ether, "Normal withdraw failed on SealedOasis");
         console.log("NORMAL WITHDRAW SUCCEEDED");
     }
 }

@@ -18,7 +18,7 @@ contract SpireVault {
         require(amount > 0, "Nothing to withdraw");
 
         // Control passes to attacker here — balance not yet zeroed
-        (bool success, ) = msg.sender.call{value: amount}("");
+        (bool success,) = msg.sender.call{value: amount}("");
         require(success, "Transfer failed");
 
         balances[msg.sender] = 0;

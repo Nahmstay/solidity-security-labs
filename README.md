@@ -29,6 +29,7 @@ Tests include step-by-step logs showing exactly where the exploit lands and wher
 | Vulnerability | Folder | Article |
 |---|---|---|
 | Reentrancy — Classic, Cross-Function, Cross-Contract | `src/vulnerabilities/reentrancy` | [Read](https://medium.com/@nahmstay/reentrancy-i-still-write-cei-every-time-5cdb28d1be84) |
+| Integer Overflow — Pre-0.8 Timelock | `src/vulnerabilities/integer-overflow` | [Read](https://medium.com/@nahmstay/integer-overflow-the-math-that-breaks-everything-10cce3376a52) |
 
 More coming as the series grows.
 
@@ -36,13 +37,15 @@ More coming as the series grows.
 
 ## Structure
 
-Each vulnerability folder contains:
+Each vulnerability folder contains three contracts:
 
-- `Vulnerable*.sol` — the flawed contract
-- `*Attacker.sol` — the exploit
-- `solution/Fixed*.sol` — the patched version
+- The vulnerable contract (e.g. `ElderTimelock.sol`, `OasisVault.sol`)
+- The exploit (e.g. `TimelockExploit.sol`, `EchoAttacker.sol`)
+- The patched version under `solution/` (e.g. `SealedTimelock.sol`, `SealedOasis.sol`)
 
-Tests live in `test/vulnerabilities/` mirroring the same structure.
+Naming is thematic per lab, not mechanical. Tests live in `test/vulnerabilities/` mirroring the same structure.
+
+The integer-overflow lab mixes Solidity 0.7 (vulnerable + exploit) and 0.8 (fix) in the same project. Foundry compiles each file under its own pragma — don't pin a single `solc` version in `foundry.toml` or the 0.7 contracts will fail to build.
 
 ---
 
